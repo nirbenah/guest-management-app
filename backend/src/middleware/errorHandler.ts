@@ -10,10 +10,10 @@ export function errorHandler(
   error: AppError,
   req: Request,
   res: Response,
-  next: NextFunction
+  _next: NextFunction
 ): void {
   let statusCode = error.statusCode || 500;
-  let message = error.message || 'Internal server error';
+  const message = error.message || 'Internal server error';
 
   // Handle specific error types
   if (error.name === 'ValidationError') {
@@ -41,7 +41,7 @@ export function errorHandler(
 }
 
 export function asyncHandler(
-  fn: (req: Request, res: Response, next: NextFunction) => Promise<any>
+  fn: (req: Request, res: Response, next: NextFunction) => Promise<unknown>
 ) {
   return (req: Request, res: Response, next: NextFunction) => {
     Promise.resolve(fn(req, res, next)).catch(next);

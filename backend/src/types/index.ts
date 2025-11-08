@@ -29,7 +29,7 @@ export interface CreateUserRequest {
   email: string;
   password: string;
   displayName: string;
-  phone?: string;
+  phone?: string | undefined;
 }
 
 export interface LoginRequest {

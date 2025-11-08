@@ -23,7 +23,7 @@ export async function requireEventAccess(
       throw createError('Authentication required', 401);
     }
 
-    const eventId = req.params?.eventId || (req.body as any)?.eventId;
+    const eventId = req.params?.eventId || (req.body as Record<string, unknown>)?.eventId;
     if (!eventId) {
       throw createError('Event ID required', 400);
     }
@@ -38,7 +38,7 @@ export async function requireEventAccess(
   }
 }
 
-export function requireRole(requiredRole: 'owner' | 'admin' | 'editor') {
+export function requireRole(_requiredRole: 'owner' | 'admin' | 'editor') {
   return async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
     try {
       if (!req.user) {
@@ -59,6 +59,7 @@ export function requireRole(requiredRole: 'owner' | 'admin' | 'editor') {
 }
 
 // Helper function to determine if user role has required permissions
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function hasPermission(userRole: string, requiredRole: string): boolean {
   const roleHierarchy = {
     owner: 4,

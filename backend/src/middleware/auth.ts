@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
 import { verifyToken } from '../utils/jwt';
 import { AuthenticatedRequest } from '../types';
 
@@ -26,7 +26,7 @@ export async function authenticateToken(
     };
 
     next();
-  } catch (error) {
+  } catch {
     res.status(403).json({
       success: false,
       message: 'Invalid or expired token',
@@ -48,7 +48,7 @@ export function optionalAuth(req: AuthenticatedRequest, res: Response, next: Nex
     }
 
     next();
-  } catch (error) {
+  } catch {
     // Ignore auth errors for optional auth
     next();
   }
