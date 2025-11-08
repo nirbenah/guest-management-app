@@ -2,24 +2,7 @@
 
 ## 🔥 In Progress
 
-### Task: Set up backend project structure
-**Status:** 🔄 In Progress
-**Started:** 2025-11-08
-**Assigned to:** Nir
-**Priority:** High
-
-**Checklist:**
-- [ ] Initialize Node.js project (`npm init`)
-- [ ] Install dependencies (Express, Prisma, etc.)
-- [ ] Set up TypeScript configuration
-- [ ] Create folder structure (routes, services, etc.)
-- [ ] Set up ESLint & Prettier
-
-**Blockers:** None
-
-**Notes:** 
-- Using Express instead of Fastify for now
-- TypeScript strict mode enabled
+No tasks currently in progress.
 
 ---
 
@@ -106,6 +89,20 @@
 - [x] Created project context files
 - [x] Designed complete database schema
 - [x] Set up Git repository
+- [x] Initialize backend project structure
+  - [x] Initialize Node.js project (`npm init`)
+  - [x] Install dependencies (Express, Prisma, TypeScript, Zod, etc.)
+  - [x] Set up TypeScript configuration with strict mode
+  - [x] Create folder structure (routes, middleware, services, utils, types)
+  - [x] Set up ESLint & Prettier configuration
+  - [x] Create basic Express server with security middleware
+  - [x] Set up environment configuration files (.env, .env.example)
+  - [x] Create complete Prisma schema matching DATABASE_SCHEMA.md
+  - [x] Create authentication middleware (JWT-based)
+  - [x] Create error handling middleware
+  - [x] Create validation utilities with Zod
+  - [x] Set up API route stubs for auth, events, and guests
+  - [x] Verify TypeScript compilation and code formatting
 
 ---
 
@@ -133,9 +130,9 @@ No blocked tasks currently.
 
 ## 📊 Progress Tracker
 
-### Overall Progress: 5%
-- [ ] Backend (0%)
-  - [ ] Setup (10%)
+### Overall Progress: 25%
+- [x] Backend (25%)
+  - [x] Setup (100%) ✅
   - [ ] Auth (0%)
   - [ ] Core APIs (0%)
   - [ ] Advanced features (0%)
