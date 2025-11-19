@@ -38,6 +38,8 @@ router.post(
   '/login',
   asyncHandler(async (req, res) => {
     try {
+      console.log('Login attempt for email:', req.body.email);
+      
       // Validate input
       const validatedData = validateData(loginSchema, req.body);
       

@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guest Management App - Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            background: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: #2c3e50;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+        }
+
+        .auth-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .main-app {
+            display: none;
+        }
+
+        .section {
+            background: white;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #555;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        button:hover {
+            background: #2980b9;
+        }
+
+        .btn-danger {
+            background: #e74c3c;
+        }
+
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+        }
+
+        .btn-secondary:hover {
+            background: #7f8c8d;
+        }
+
+        .user-info {
+            background: #ecf0f1;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+
+        .item {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .item h4 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .item-actions {
+            margin-top: 1rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+
+        .status-pending { color: #f39c12; }
+        .status-confirmed { color: #27ae60; }
+        .status-declined { color: #e74c3c; }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .table-visual {
+            display: inline-block;
+            margin: 5px;
+            padding: 10px;
+            border: 2px solid #3498db;
+            border-radius: 50%;
+            background: #ecf0f1;
+            text-align: center;
+            min-width: 60px;
+            min-height: 60px;
+            cursor: pointer;
+        }
+
+        .table-visual:hover {
+            background: #d5dbdb;
+        }
+
+        .seating-layout {
+            background: #f8f9fa;
+            padding: 2rem;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            min-height: 400px;
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎉 Guest Management App - Demo</h1>
+            <p>Test all backend features with this simple interface</p>
+        </div>
+
+        <!-- Authentication Section -->
+        <div id="auth-section" class="auth-section">
+            <div id="login-form">
+                <h2>Login or Register</h2>
+                <div class="form-group">
+                    <label for="auth-email">Email:</label>
+                    <input type="email" id="auth-email" placeholder="your@email.com">
+                </div>
+                <div class="form-group">
+                    <label for="auth-password">Password:</label>
+                    <input type="password" id="auth-password" placeholder="Password (min 8 chars)">
+                </div>
+                <div class="form-group">
+                    <label for="auth-name">Display Name:</label>
+                    <input type="text" id="auth-name" placeholder="Your Full Name">
+                </div>
+                <button onclick="login()">Login</button>
+                <button onclick="register()">Register</button>
+                <div id="auth-message"></div>
+            </div>
+        </div>
+
+        <!-- Main Application -->
+        <div id="main-app" class="main-app">
+            <!-- User Info -->
+            <div class="user-info">
+                <div id="user-info"></div>
+                <button onclick="logout()">Logout</button>
+            </div>
+
+            <!-- Events Section -->
+            <div class="section">
+                <h2>📅 Events</h2>
+                <div class="form-group">
+                    <label for="event-name">Event Name:</label>
+                    <input type="text" id="event-name" placeholder="Wedding, Birthday Party, etc.">
+                </div>
+                <div class="form-group">
+                    <label for="event-date">Event Date:</label>
+                    <input type="datetime-local" id="event-date">
+                </div>
+                <div class="form-group">
+                    <label for="event-location">Location:</label>
+                    <input type="text" id="event-location" placeholder="Venue address">
+                </div>
+                <button onclick="createNewEvent()">Create Event</button>
+                <button onclick="loadEvents()">Refresh Events</button>
+
+                <div id="events-list"></div>
+            </div>
+
+            <!-- Guests Section -->
+            <div class="section" id="guests-section" style="display:none;">
+                <h2>👥 Guests</h2>
+                <div class="form-group">
+                    <label for="guest-name">First Name:</label>
+                    <input type="text" id="guest-name" placeholder="John">
+                </div>
+                <div class="form-group">
+                    <label for="guest-lastname">Last Name:</label>
+                    <input type="text" id="guest-lastname" placeholder="Smith">
+                </div>
+                <div class="form-group">
+                    <label for="guest-email">Email:</label>
+                    <input type="email" id="guest-email" placeholder="john@example.com">
+                </div>
+                <div class="form-group">
+                    <label for="guest-phone">Phone:</label>
+                    <input type="text" id="guest-phone" placeholder="+1234567890">
+                </div>
+                <div class="form-group">
+                    <label for="guest-type">Guest Type:</label>
+                    <select id="guest-type">
+                        <option value="primary">Primary</option>
+                        <option value="companion">Companion</option>
+                        <option value="child">Child</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="guest-side">Side:</label>
+                    <select id="guest-side">
+                        <option value="">Select side</option>
+                        <option value="bride">Bride</option>
+                        <option value="groom">Groom</option>
+                    </select>
+                </div>
+                <button onclick="createGuest()">Add Guest</button>
+                <button onclick="loadGuests()">Refresh Guests</button>
+
+                <div id="guests-list"></div>
+            </div>
+
+            <!-- Groups Section -->
+            <div class="section" id="groups-section" style="display:none;">
+                <h2>👨‍👩‍👧‍👦 Groups</h2>
+                <div class="form-group">
+                    <label for="group-name">Group Name:</label>
+                    <input type="text" id="group-name" placeholder="Smith Family">
+                </div>
+                <div class="form-group">
+                    <label for="group-preference">Seating Preference:</label>
+                    <select id="group-preference">
+                        <option value="no_preference">No Preference</option>
+                        <option value="together">Keep Together</option>
+                        <option value="separate">Keep Separate</option>
+                        <option value="vip">VIP Area</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="group-priority">Priority:</label>
+                    <select id="group-priority">
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                        <option value="low">Low</option>
+                    </select>
+                </div>
+                <button onclick="createGroup()">Create Group</button>
+                <button onclick="loadGroups()">Refresh Groups</button>
+
+                <div id="groups-list"></div>
+            </div>
+
+            <!-- Versions Section -->
+            <div class="section" id="versions-section" style="display:none;">
+                <h2>📐 Layout Versions</h2>
+                <div class="form-group">
+                    <label for="version-name">Version Name:</label>
+                    <input type="text" id="version-name" placeholder="Main Layout">
+                </div>
+                <div class="form-group">
+                    <label for="version-description">Description:</label>
+                    <textarea id="version-description" placeholder="Describe this seating arrangement"></textarea>
+                </div>
+                <button onclick="createVersion()">Create Version</button>
+                <button onclick="loadVersions()">Refresh Versions</button>
+
+                <div id="versions-list"></div>
+            </div>
+
+            <!-- Tables Section -->
+            <div class="section" id="tables-section" style="display:none;">
+                <h2>🪑 Tables</h2>
+                <div class="form-group">
+                    <label for="table-name">Table Name:</label>
+                    <input type="text" id="table-name" placeholder="Table 1">
+                </div>
+                <div class="form-group">
+                    <label for="table-number">Table Number:</label>
+                    <input type="number" id="table-number" placeholder="1" min="1">
+                </div>
+                <div class="form-group">
+                    <label for="table-seats">Total Seats:</label>
+                    <input type="number" id="table-seats" placeholder="8" min="1" max="20">
+                </div>
+                <div class="form-group">
+                    <label for="table-shape">Shape:</label>
+                    <select id="table-shape">
+                        <option value="Circle">Circle</option>
+                        <option value="Rectangle">Rectangle</option>
+                        <option value="Square">Square</option>
+                        <option value="Oval">Oval</option>
+                    </select>
+                </div>
+                <button onclick="createTable()">Add Table</button>
+                <button onclick="loadTables()">Refresh Tables</button>
+
+                <div id="tables-list"></div>
+                
+                <!-- Simple Seating Layout -->
+                <div id="seating-layout" class="seating-layout">
+                    <h4>Seating Layout</h4>
+                    <p>Click tables to assign guests</p>
+                    <div id="layout-area"></div>
+                </div>
+            </div>
+
+            <!-- Collaborators Section -->
+            <div class="section" id="collaborators-section" style="display:none;">
+                <h2>🤝 Collaborators</h2>
+                <div class="form-group">
+                    <label for="collab-email">Email:</label>
+                    <input type="email" id="collab-email" placeholder="collaborator@example.com">
+                </div>
+                <div class="form-group">
+                    <label for="collab-role">Role:</label>
+                    <select id="collab-role">
+                        <option value="viewer">Viewer (Read only)</option>
+                        <option value="editor">Editor (Can modify)</option>
+                        <option value="admin">Admin (Full access)</option>
+                    </select>
+                </div>
+                <button onclick="inviteCollaborator()">Invite Collaborator</button>
+                <button onclick="loadCollaborators()">Refresh Collaborators</button>
+
+                <div id="collaborators-list"></div>
+            </div>
+        </div>
+
+        <!-- Message Area -->
+        <div id="message-area"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

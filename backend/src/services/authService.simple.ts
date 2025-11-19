@@ -8,8 +8,10 @@ const dbClient = new Client(process.env.DATABASE_URL);
 
 export class AuthService {
   private async getDbClient() {
-    if (!dbClient._connected) {
+    try {
       await dbClient.connect();
+    } catch (error) {
+      // Connection already exists or other connection error
     }
     return dbClient;
   }
